@@ -3,6 +3,7 @@ import util
 from ultralytics import YOLO
 import cv2
 
+
 from sort.sort.sort import *
 from util import get_car, read_license_plate ,write_csv
 
@@ -35,7 +36,7 @@ while ret:
     frame_number = frame_number+1
     ret, frame = cap.read()
     if ret:
-        if frame_number > 10:
+        if frame_number > 100:
             break
         results[frame_number] = {}
         #deteect vehicles
