@@ -70,7 +70,6 @@ while ret:
                 _, license_plate_crop_thresh = cv2.threshold(license_plate_crop_gray, 64, 255, cv2.THRESH_BINARY_INV)
 
 
-
                 #read license plate number
                 license_plate_text, license_plate_text_score = read_license_plate(license_plate_crop_thresh)
 
@@ -80,6 +79,10 @@ while ret:
                                                                       'text':license_plate_text,
                                                                       'bbox_score':score,
                                                                       'text_score':license_plate_text_score}}
+                    # if license_plate_text_score > 0.3:
+                    #     print(license_plate_text)
+                    #     cv2.imshow('threshold', license_plate_crop_thresh)
+                    #     cv2.waitKey(0)
 
 #write results
 
