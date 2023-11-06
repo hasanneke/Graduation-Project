@@ -115,6 +115,15 @@ def license_complies_format(text):
     #      (text[7] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[7] in dict_char_to_int.keys()):
     #     #34 TLK 366
     #     return True
+    # elif (text[0] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) and \
+    #      (text[1] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) and \
+    #      (text[2] in string.ascii_uppercase or text[2] in dict_int_to_char.keys()) and \
+    #      (text[3] in string.ascii_uppercase or text[3] in dict_int_to_char.keys()) and \
+    #      (text[4] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[4] in dict_char_to_int.keys()) and \
+    #      (text[5] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[5] in dict_char_to_int.keys()) and \
+    #      (text[6] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[6] in dict_char_to_int.keys()):
+    #     #34 TL 366
+    #     return True
     # else:
     #     return False
 
@@ -129,6 +138,7 @@ def format_license(text):
     Returns:
         str: Formatted license plate text.
     """
+    """For sample Video"""
     license_plate_ = ''
     mapping = {0: dict_int_to_char, 1: dict_int_to_char, 4: dict_int_to_char, 5: dict_int_to_char, 6: dict_int_to_char,
                2: dict_char_to_int, 3: dict_char_to_int}
@@ -139,6 +149,17 @@ def format_license(text):
             license_plate_ += text[j]
 
     return license_plate_
+"""For Turkish License Plate Format"""
+    # license_plate_ = ''
+    # mapping = {0: dict_char_to_int, 1: dict_char_to_int, 4: dict_int_to_char, 5: dict_char_to_int, 6: dict_char_to_int, 7: dict_char_to_int,
+    #            2: dict_int_to_char, 3: dict_int_to_char}
+    # for j in [0, 1, 2, 3, 4, 5, 6]:
+    #     if text[j] in mapping[j].keys():
+    #         license_plate_ += mapping[j][text[j]]
+    #     else:
+    #         license_plate_ += text[j]
+    #
+    # return license_plate_
 
 
 def read_license_plate(license_plate_crop):

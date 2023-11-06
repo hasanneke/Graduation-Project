@@ -31,12 +31,12 @@ vehicles = [2,3,5,7]
 #read freames
 frame_number = -1
 ret = True
-
+# For 60 frame = 1 second
 while ret:
-    frame_number = frame_number+1
+    frame_number = frame_number+1000
     ret, frame = cap.read()
     if ret:
-        if frame_number > 100:
+        if frame_number > 100000:
             break
         results[frame_number] = {}
         #deteect vehicles
@@ -68,21 +68,22 @@ while ret:
                 # process license plate
                 license_plate_crop_gray = cv2.cvtColor(license_plate_crop, cv2.COLOR_BGR2GRAY)
                 _, license_plate_crop_thresh = cv2.threshold(license_plate_crop_gray, 64, 255, cv2.THRESH_BINARY_INV)
-
+                cv2.imshow('threshold', license_plate_crop_thresh)
+                cv2.waitKey(0)
 
                 #read license plate number
                 license_plate_text, license_plate_text_score = read_license_plate(license_plate_crop_thresh)
-
+                print(license_plate_text)
                 if license_plate_text is not None:
                     results[frame_number][car_id] = {'car':{'bbox':[xcar1, ycar1, xcar2, ycar2]},
                                                      'license_plate':{'bbox':[x1,y1,x2,y2],
                                                                       'text':license_plate_text,
                                                                       'bbox_score':score,
                                                                       'text_score':license_plate_text_score}}
-                    # if license_plate_text_score > 0.3:
-                    #     print(license_plate_text)
-                    #     cv2.imshow('threshold', license_plate_crop_thresh)
-                    #     cv2.waitKey(0)
+                    if license_plate_text_score > 0.01:
+                        print(license_plate_text)
+                        cv2.imshow('threshold', license_plate_crop_thresh)
+                        cv2.waitKey(0)
 
 #write results
 
