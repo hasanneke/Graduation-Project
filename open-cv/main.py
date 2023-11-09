@@ -18,7 +18,7 @@ license_plate_detector = YOLO('license_plate_detector.pt')
 
 #load video
 
-cap = cv2.VideoCapture('./sample.mp4')
+cap = cv2.VideoCapture('./test.mp4')
 
 
 vehicles = [2,3,5,7]
@@ -33,10 +33,10 @@ frame_number = -1
 ret = True
 # For 60 frame = 1 second
 while ret:
-    frame_number = frame_number+1000
+    frame_number = frame_number+1
     ret, frame = cap.read()
     if ret:
-        if frame_number > 100000:
+        if frame_number > 1000:
             break
         results[frame_number] = {}
         #deteect vehicles
@@ -80,10 +80,10 @@ while ret:
                                                                       'text':license_plate_text,
                                                                       'bbox_score':score,
                                                                       'text_score':license_plate_text_score}}
-                    if license_plate_text_score > 0.01:
-                        print(license_plate_text)
-                        cv2.imshow('threshold', license_plate_crop_thresh)
-                        cv2.waitKey(0)
+                    # if license_plate_text_score > 0.2:
+                    #     print(license_plate_text)
+                    #     cv2.imshow('threshold', license_plate_crop_thresh)
+                    #     cv2.waitKey(0)
 
 #write results
 

@@ -57,6 +57,12 @@ def write_csv(results, output_path):
                             )
         f.close()
 
+def cut_first_char(text):
+    if len(text)>8:
+        new_text = text[1:]
+        return new_text
+    else:
+        return text
 
 def license_complies_format(text):
     """
@@ -68,64 +74,73 @@ def license_complies_format(text):
     Returns:
         bool: True if the license plate complies with the format, False otherwise.
     """
-    if len(text) != 7:
-        return False
-
-    if (text[0] in string.ascii_uppercase or text[0] in dict_int_to_char.keys()) and \
-       (text[1] in string.ascii_uppercase or text[1] in dict_int_to_char.keys()) and \
-       (text[2] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[2] in dict_char_to_int.keys()) and \
-       (text[3] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[3] in dict_char_to_int.keys()) and \
-       (text[4] in string.ascii_uppercase or text[4] in dict_int_to_char.keys()) and \
-       (text[5] in string.ascii_uppercase or text[5] in dict_int_to_char.keys()) and \
-       (text[6] in string.ascii_uppercase or text[6] in dict_int_to_char.keys()):
-        return True
-    else:
-        return False
-    """For Turkish License Plate Format"""
-    # if len(text) != 7 or 8:
+    # if len(text) != 7:
     #     return False
     #
-    #
-    # if (text[0] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) and \
-    #    (text[1] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) and \
-    #    (text[2] in string.ascii_uppercase or text[2] in dict_int_to_char.keys()) and \
-    #    (text[3] in string.ascii_uppercase or text[3] in dict_int_to_char.keys()) and \
+    # if (text[0] in string.ascii_uppercase or text[0] in dict_int_to_char.keys()) and \
+    #    (text[1] in string.ascii_uppercase or text[1] in dict_int_to_char.keys()) and \
+    #    (text[2] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[2] in dict_char_to_int.keys()) and \
+    #    (text[3] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[3] in dict_char_to_int.keys()) and \
     #    (text[4] in string.ascii_uppercase or text[4] in dict_int_to_char.keys()) and \
-    #    (text[5] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[5] in dict_char_to_int.keys()) and \
-    #    (text[6] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[6] in dict_char_to_int.keys()):
-    #     #34 ABC 34
-    #     return True
-    # elif (text[0] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) and \
-    #      (text[1] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) and \
-    #      (text[2] in string.ascii_uppercase or text[2] in dict_int_to_char.keys()) and \
-    #      (text[3] in string.ascii_uppercase or text[3] in dict_int_to_char.keys()) and \
-    #      (text[4] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[4] in dict_char_to_int.keys()) and \
-    #      (text[5] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[5] in dict_char_to_int.keys()) and \
-    #      (text[6] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[6] in dict_char_to_int.keys()) and \
-    #      (text[7] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[7] in dict_char_to_int.keys()):
-    #     #34 TL 3666
-    #     return True
-    # elif (text[0] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) and \
-    #      (text[1] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) and \
-    #      (text[2] in string.ascii_uppercase or text[2] in dict_int_to_char.keys()) and \
-    #      (text[3] in string.ascii_uppercase or text[3] in dict_int_to_char.keys()) and \
-    #      (text[4] in string.ascii_uppercase or text[4] in dict_int_to_char.keys()) and \
-    #      (text[5] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[5] in dict_char_to_int.keys()) and \
-    #      (text[6] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[6] in dict_char_to_int.keys()) and \
-    #      (text[7] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[7] in dict_char_to_int.keys()):
-    #     #34 TLK 366
-    #     return True
-    # elif (text[0] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) and \
-    #      (text[1] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) and \
-    #      (text[2] in string.ascii_uppercase or text[2] in dict_int_to_char.keys()) and \
-    #      (text[3] in string.ascii_uppercase or text[3] in dict_int_to_char.keys()) and \
-    #      (text[4] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[4] in dict_char_to_int.keys()) and \
-    #      (text[5] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[5] in dict_char_to_int.keys()) and \
-    #      (text[6] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[6] in dict_char_to_int.keys()):
-    #     #34 TL 366
+    #    (text[5] in string.ascii_uppercase or text[5] in dict_int_to_char.keys()) and \
+    #    (text[6] in string.ascii_uppercase or text[6] in dict_int_to_char.keys()):
     #     return True
     # else:
     #     return False
+    """For Turkish License Plate Format"""
+    if len(text) != 7 and len(text) != 8:
+        return False
+
+
+    if (text[0] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) and \
+       (text[1] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) and \
+       (text[2] in string.ascii_uppercase or text[2] in dict_int_to_char.keys()) and \
+       (text[3] in string.ascii_uppercase or text[3] in dict_int_to_char.keys()) and \
+       (text[4] in string.ascii_uppercase or text[4] in dict_int_to_char.keys()) and \
+       (text[5] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[5] in dict_char_to_int.keys()) and \
+       (text[6] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[6] in dict_char_to_int.keys()):
+        #34 ABC 34
+        return True
+    elif (text[0] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) and \
+         (text[1] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) and \
+         (text[2] in string.ascii_uppercase or text[2] in dict_int_to_char.keys()) and \
+         (text[3] in string.ascii_uppercase or text[3] in dict_int_to_char.keys()) and \
+         (text[4] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[4] in dict_char_to_int.keys()) and \
+         (text[5] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[5] in dict_char_to_int.keys()) and \
+         (text[6] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[6] in dict_char_to_int.keys()) and \
+         (text[7] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[7] in dict_char_to_int.keys()):
+        #34 TL 3666
+        return True
+    elif (text[0] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) and \
+         (text[1] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) and \
+         (text[2] in string.ascii_uppercase or text[2] in dict_int_to_char.keys()) and \
+         (text[3] in string.ascii_uppercase or text[3] in dict_int_to_char.keys()) and \
+         (text[4] in string.ascii_uppercase or text[4] in dict_int_to_char.keys()) and \
+         (text[5] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[5] in dict_char_to_int.keys()) and \
+         (text[6] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[6] in dict_char_to_int.keys()) and \
+         (text[7] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[7] in dict_char_to_int.keys()):
+        #34 TLK 366
+        return True
+    elif (text[0] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) and \
+         (text[1] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) and \
+         (text[2] in string.ascii_uppercase or text[2] in dict_int_to_char.keys()) and \
+         (text[3] in string.ascii_uppercase or text[3] in dict_int_to_char.keys()) and \
+         (text[4] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[4] in dict_char_to_int.keys()) and \
+         (text[5] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[5] in dict_char_to_int.keys()) and \
+         (text[6] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[6] in dict_char_to_int.keys()):
+        #34 TL 366
+        return True
+    elif (text[0] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) and \
+         (text[1] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) and \
+         (text[2] in string.ascii_uppercase or text[2] in dict_int_to_char.keys()) and \
+         (text[3] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[3] in dict_char_to_int.keys()) and \
+         (text[4] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[4] in dict_char_to_int.keys()) and \
+         (text[5] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[5] in dict_char_to_int.keys()) and \
+         (text[6] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] or text[6] in dict_char_to_int.keys()):
+        #34 T 3666
+        return True
+    else:
+        return False
 
 
 def format_license(text):
@@ -177,11 +192,12 @@ def read_license_plate(license_plate_crop):
 
     for detection in detections:
         bbox, text, score = detection
-
+        if len(text)>8:
+            text = cut_first_char(text)
         text = text.upper().replace(' ', '')
-
         if license_complies_format(text):
-            return format_license(text), score
+            # return format_license(text), score
+              return text,score
 
     return None, None
 
