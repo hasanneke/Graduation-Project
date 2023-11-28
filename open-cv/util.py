@@ -187,19 +187,20 @@ def read_license_plate(license_plate_crop):
     Returns:
         tuple: Tuple containing the formatted license plate text and its confidence score.
     """
-
+    text=""
+    score=""
     detections = reader.readtext(license_plate_crop)
 
     for detection in detections:
         bbox, text, score = detection
-        if len(text)>8:
-            text = cut_first_char(text)
+        # if len(text)>8:
+        #     text = cut_first_char(text)
         text = text.upper().replace(' ', '')
-        if license_complies_format(text):
-            # return format_license(text), score
-              return text,score
+        # if license_complies_format(text):
+        #     # return format_license(text), score
+        #       return text,score
 
-    return None, None
+    return text, score
 
 
 def get_car(license_plate, vehicle_track_ids):
