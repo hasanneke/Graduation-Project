@@ -73,8 +73,8 @@ while ret:
                 #     cv2.waitKey(0)
 
                 #read license plate number
-                # if score>0.4:
-                #     util.llmtest(license_plate_crop)
+                if score>0.4:
+                    util.llmtest(license_plate_crop)
                 license_plate_text, license_plate_text_score = read_license_plate(license_plate_crop_thresh)
                 print(license_plate_text)
                 if license_plate_text is not None:
@@ -91,4 +91,4 @@ while ret:
 #write results
 
 
-write_csv(results,'./readed.csv')
+write_csv(results,'./readedChanged.csv')
