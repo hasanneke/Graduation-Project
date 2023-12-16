@@ -1,5 +1,6 @@
 import string
 import easyocr
+import pytesseract
 
 # Initialize the OCR reader
 reader = easyocr.Reader(["tr"], gpu=False)
@@ -267,10 +268,7 @@ def read_license_plate(license_plate_crop):
         bbox, text, score = detection
         text = "".join(e for e in text if e.isalnum())
         text = text.upper()
-        print(text)
-        print(score)
-        print(len(text))
-        if len(text) >= 7 and len(text) <= 8:
+        if len(text) >= 7 or len(text) <= 8 and score > 0.6:
             return text, score
         # if license_complies_format(text):
         #     return format_license(text), score
