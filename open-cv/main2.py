@@ -15,7 +15,7 @@ coco_model = YOLO("yolov8n.pt")
 license_plate_detector = YOLO("./license_plate_detector.pt")
 
 # load video
-cap = cv2.VideoCapture("./sample.mp4")
+cap = cv2.VideoCapture("./sample4.mp4")
 
 vehicles = [2, 3, 5, 7]
 
@@ -34,16 +34,6 @@ tessdata_dir_config = f'--tessdata-dir "{script_dir}"'
 
 
 def get_car(license_plate, vehicle_track_ids):
-    """
-    Retrieve the vehicle coordinates and ID based on the license plate coordinates.
-
-    Args:
-        license_plate (tuple): Tuple containing the coordinates of the license plate (x1, y1, x2, y2, score, class_id).
-        vehicle_track_ids (list): List of vehicle track IDs and their corresponding coordinates.
-
-    Returns:
-        tuple: Tuple containing the vehicle coordinates (x1, y1, x2, y2) and ID.
-    """
     x1, y1, x2, y2, score, class_id = license_plate
 
     foundIt = False
@@ -62,13 +52,6 @@ def get_car(license_plate, vehicle_track_ids):
 
 
 def write_csv(results, output_path):
-    """
-    Write the results to a CSV file.
-
-    Args:
-        results (dict): Dictionary containing the results.
-        output_path (str): Path to the output CSV file.
-    """
     with open(output_path, "w") as f:
         f.write(
             "{},{},{},{},{},{},{}\n".format(
@@ -115,41 +98,20 @@ def write_csv(results, output_path):
 
 
 def read_license_plate(license_plate_crop):
-    # Convert to grayscale
-    license_plate_crop_gray = cv2.cvtColor(license_plate_crop, cv2.COLOR_BGR2GRAY)
+    # # Convert to grayscale
+    # license_plate_crop_gray = cv2.cvtColor(license_plate_crop, cv2.COLOR_BGR2GRAY)
 
-    # Thresholding
-    _, license_plate_crop_thresh = cv2.threshold(
-        license_plate_crop_gray, 100, 800, cv2.THRESH_BINARY_INV
-    )
-    # thresholded = cv2.adaptiveThreshold(
-    #     license_plate_crop_gray,
-    #     255,
-    #     cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-    #     cv2.THRESH_BINARY,
-    #     11,
-    #     2,
+    # # Thresholding
+    # _, license_plate_crop_thresh = cv2.threshold(
+    #     license_plate_crop_gray, 120, 255, cv2.THRESH_BINARY_INV
     # )
-    # Apply Otsu's thresholding
-    _, thresholded = cv2.threshold(
-        license_plate_crop_gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU
-    )
-
-    # # Step 2: Preprocess the image (e.g., convert to grayscale and apply adaptive thresholding)
-    # gray_image = cv2.cvtColor(license_plate_crop, cv2.COLOR_BGR2GRAY)
-    # thresh_image = cv2.adaptiveThreshold(
-    #     gray_image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2
-    # )
-    cv2.imshow("Frame", thresholded)
+    cv2.imshow("Frame", license_plate_crop)
     cv2.waitKey(1)
     # OCR with Tesseract
     license_plate_text = pytesseract.image_to_string(
-        thresholded,
+        license_plate_crop,
         config=f"--psm 8 --oem 3 -l tur {tessdata_dir_config}",
     )
-    # license_plate_text = "".join(e for e in license_plate_text if e.isalnum())
-    # license_plate_text = license_plate_text.upper()
-    # If you have a specific format or conditions for license plate text, you can implement them here.
     cleaned_text = re.sub("[^a-zA-Z0-9]", "", license_plate_text)
     if 7 <= len(cleaned_text) <= 8:
         return cleaned_text, None
@@ -185,7 +147,8 @@ while ret:
             if car_id != -1:
                 # crop license plate
                 license_plate_crop = frame[int(y1) : int(y2), int(x1) : int(x2), :]
-
+                # cv2.imshow("Frame", license_plate_crop)
+                # cv2.waitKey(1)
                 # read license plate number
                 license_plate_text, _ = read_license_plate(license_plate_crop)
 
